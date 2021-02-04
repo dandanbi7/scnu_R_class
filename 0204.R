@@ -80,5 +80,52 @@ midwest$group <- ifelse(midwest$ratio > 0.4872462, "large", "small")
 table(midwest$group)
 library(ggplot2)
 qplot(midwest$group)
--
-  
+
+exam <- read.csv("./Data/csv_exam.csv", fileEncoding = "euc-kr")
+exam  
+
+library(dplyr)
+exam %>% filter(class == 1)
+exam %>% filter(class == 2)
+exam %>% filter(class != 1)
+exam %>% filter(class != 3)
+exam %>% filter(math > 50)
+exam %>% filter(math < 50)
+exam %>% filter(english >= 80)
+exam %>% filter(english <= 80)
+exam %>% filter(class == 1 & math >= 50)
+exam %>% filter(class == 2 & english >= 80)
+exam %>% filter(math >= 90 | english >=90)
+exam %>% filter(english < 90 | science < 50)
+exam %>% filter(class == 1 | class == 3 | class == 5)
+exam %>% filter(class %in% c(1,3,5))
+
+class1 <- exam %>% filter(class == 1)
+class2 <- exam %>% filter(class == 2)
+mean(class1$math)
+mean(class2$math)
+
+mpg <- as.data.frame(ggplot2::mpg)  # mpg 데이터 불러오기
+mpg_a <- mpg %>% filter(displ <= 4) # displ 4 이하 추출
+mpg_b <- mpg %>% filter(displ >= 5) # displ 5 이상 추출
+aa <- mean(mpg_a$hwy) # displ 4 이하 hwy 평균
+bb <- mean(mpg_b$hwy) # displ 5 이상 hwy 평균
+aa>bb
+
+mpg_audi <- mpg %>% filter(manufacturer == "audi") # audi 추출
+mpg_toyota <- mpg %>% filter(manufacturer == "toyota") # toyota 추출
+cc <- mean(mpg_audi$cty) # audi 의 cty 평균
+dd <- mean(mpg_toyota$cty) # toyota 의 cty 평균
+cc>dd
+
+# manufacturer 가 chevrolet, ford, honda 에 해당하면 추출
+mpg_new <- mpg %>% filter(manufacturer %in% c("chevrolet", "ford", "honda"))
+mean(mpg_new$hwy)
+
+exam %>% select(math)
+exam %>% select(-math) # math 제외
+exam %>% select(-math, -english) # math, english 제외
+exam %>% filter(class == 1) %>% select(english)
+
+exam %>% filter(class == 1) %>% select(english)
+exam %>% select(id, math) %>% head
